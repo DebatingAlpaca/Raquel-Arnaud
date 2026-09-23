@@ -126,6 +126,13 @@ const PAGE_STYLE = `
     margin-bottom: 36px;
   }
   .voltar:hover { color: #5f4826; }
+  .autor {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: #6b6259;
+    margin-top: 6px;
+  }
   .eyebrow {
     font-family: 'Inter', sans-serif;
     font-size: 11px;
@@ -231,6 +238,9 @@ function paginaObra(obra) {
   const linkVoltar = obra.prateleira_id
     ? `<a class="voltar" href="/visualizar/prateleira/${escapeHtml(obra.prateleira_id)}">&larr; Voltar à prateleira</a>`
     : "";
+  const autorHtml = obra.autor
+    ? `<div class="autor">${escapeHtml(obra.autor)}</div>`
+    : "";
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -246,6 +256,7 @@ ${FONTS_LINK}
 ${linkVoltar}
 <div class="imagem-wrap"><img src="${escapeHtml(obra.imagem_url)}" alt="${escapeHtml(obra.nome)}"></div>
 <h1>${escapeHtml(obra.nome)}</h1>
+${autorHtml}
 <div class="meta">${metaPartes.join("  ·  ")}</div>
 <div class="divisor"></div>
 <p class="descricao">${escapeHtml(obra.descricao)}</p>
@@ -261,7 +272,7 @@ function paginaPrateleira(prateleira, obras) {
 <img src="${escapeHtml(o.imagem_url)}" alt="${escapeHtml(o.nome)}">
 <div class="obra-card-info">
 <div class="obra-card-nome">${escapeHtml(o.nome)}</div>
-<div class="obra-card-tecnica">${escapeHtml(o.tecnica)}${o.ano ? "  ·  " + escapeHtml(o.ano) : ""}</div>
+<div class="obra-card-tecnica">${o.autor ? escapeHtml(o.autor) + "  ·  " : ""}${escapeHtml(o.tecnica)}${o.ano ? "  ·  " + escapeHtml(o.ano) : ""}</div>
 </div>
 <span class="obra-card-seta">&rarr;</span>
 </a>`,
