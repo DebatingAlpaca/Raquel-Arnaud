@@ -321,8 +321,501 @@ ${FONTS_LINK}
 </html>`;
 }
 
+/* ==========================================================================
+   ÁREA ADMINISTRATIVA  (/admin)
+   Tudo abaixo é novo. Nada acima foi alterado.
+   Requer o secret ADMIN_PASSWORD:  npx wrangler secret put ADMIN_PASSWORD
+   Opcional: variável PUBLIC_BASE_URL (ex.: https://galeria.exemplo.com)
+   para forçar o domínio gravado nos QR Codes.
+   ========================================================================== */
+
+const SESSAO_COOKIE = "galeria_admin";
+const SESSAO_SEGUNDOS = 8 * 60 * 60; // 8 horas
+
+// Respostas do admin: sem CORS, sem cache, fora de buscadores.
+const ADMIN_HEADERS = {
+  "Cache-Control": "no-store",
+  "X-Robots-Tag": "noindex, nofollow",
+  "Referrer-Policy": "same-origin",
+  "X-Frame-Options": "DENY",
+};
+
+function adminHtml(content, status = 200, extra = {}) {
+  return new Response(content, {
+    status,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      ...ADMIN_HEADERS,
+      ...extra,
+    },
+  });
+}
+
+function redirecionar(destino, extra = {}) {
+  return new Response(null, {
+    status: 303,
+    headers: { Location: destino, ...ADMIN_HEADERS, ...extra },
+  });
+}
+
+async function hmacHex(chave, mensagem) {
+  const enc = new TextEncoder();
+  const k = await crypto.subtle.importKey(
+    "raw",
+    enc.encode(chave),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const sig = await crypto.subtle.sign("HMAC", k, enc.encode(mensagem));
+  return [...new Uint8Array(sig)]
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+// Comparação em tempo constante (compara os hashes SHA-256 das duas strings).
+async function iguais(a, b) {
+  const enc = new TextEncoder();
+  const [ha, hb] = await Promise.all([
+    crypto.subtle.digest("SHA-256", enc.encode(a)),
+    crypto.subtle.digest("SHA-256", enc.encode(b)),
+  ]);
+  return crypto.subtle.timingSafeEqual(ha, hb);
+}
+
+async function criarSessao(senha) {
+  const exp = Math.floor(Date.now() / 1000) + SESSAO_SEGUNDOS;
+  return `${exp}.${await hmacHex(senha, "admin:" + exp)}`;
+}
+
+function lerCookie(request, nome) {
+  const cookies = request.headers.get("Cookie") || "";
+  for (const parte of cookies.split(";")) {
+    const [k, ...v] = parte.trim().split("=");
+    if (k === nome) return v.join("=");
+  }
+  return "";
+}
+
+async function sessaoValida(request, senha) {
+  const token = lerCookie(request, SESSAO_COOKIE);
+  const [exp, assinatura] = token.split(".");
+  if (!exp || !assinatura) return false;
+  if (!(Number(exp) > Math.floor(Date.now() / 1000))) return false;
+  return iguais(assinatura, await hmacHex(senha, "admin:" + exp));
+}
+
+function cookieSessao(valor, maxAge) {
+  return `${SESSAO_COOKIE}=${valor}; Path=/admin; Max-Age=${maxAge}; HttpOnly; Secure; SameSite=Lax`;
+}
+
+const ADMIN_STYLE = `
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: #f4f3f1; color: #222; }
+  button, input { font: inherit; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; color: #6b6259; background: #ece9e4; padding: 2px 6px; border-radius: 4px; }
+  .topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: #fff; border-bottom: 1px solid #ddd8d0; }
+  .topo h1 { font-size: 15px; font-weight: 600; margin: 0; }
+  .topo form { margin: 0; }
+  .link { background: none; border: 0; color: #8a6a3f; cursor: pointer; padding: 4px 8px; }
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 120px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+  .tab { padding: 8px 16px; border: 1px solid #d5cfc5; background: #fff; border-radius: 6px; cursor: pointer; letter-spacing: 0.04em; font-size: 13px; }
+  .tab.ativa { background: #232120; color: #fff; border-color: #232120; }
+  #q { width: 100%; padding: 11px 14px; border: 1px solid #d5cfc5; border-radius: 6px; background: #fff; margin-bottom: 12px; }
+  .cabecalho-lista { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: 13px; color: #6b6259; }
+  .cabecalho-lista label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+  #lista { background: #fff; border: 1px solid #e0dbd3; border-radius: 8px; overflow: hidden; }
+  .linha { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-bottom: 1px solid #eee9e2; cursor: pointer; }
+  .linha:last-child { border-bottom: 0; }
+  .linha:hover { background: #faf8f5; }
+  .linha .nome { flex: 1 1 auto; min-width: 0; }
+  .linha .sub { color: #8f867c; font-size: 13px; flex: 0 1 30%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vazio { padding: 28px; text-align: center; color: #8f867c; }
+  #paginacao { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-top: 18px; }
+  .pg { padding: 6px 11px; border: 1px solid #d5cfc5; background: #fff; border-radius: 6px; cursor: pointer; }
+  .pg.atual { background: #232120; color: #fff; border-color: #232120; }
+  .pg:disabled { opacity: 0.4; cursor: default; }
+  .reticencias { color: #8f867c; padding: 0 4px; }
+  .barra { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 14px 16px; background: #232120; color: #fff; box-shadow: 0 -4px 16px rgba(0,0,0,.15); }
+  .barra button { border: 1px solid #6b6259; background: transparent; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+  .barra .primario, .primario { background: #c9a35f; border-color: #c9a35f; color: #1a1815; font-weight: 600; }
+  .login { max-width: 320px; margin: 15vh auto 0; background: #fff; padding: 28px; border: 1px solid #e0dbd3; border-radius: 10px; display: flex; flex-direction: column; gap: 12px; }
+  .login h1 { font-size: 17px; margin: 0 0 4px; }
+  .login input { padding: 10px 12px; border: 1px solid #d5cfc5; border-radius: 6px; }
+  .login button { padding: 10px; border: 1px solid #c9a35f; border-radius: 6px; cursor: pointer; }
+  .msg-erro { color: #a33; font-size: 13px; }
+  .aviso { max-width: 420px; margin: 20vh auto 0; text-align: center; color: #6b6259; padding: 0 20px; }
+`;
+
+function paginaAdminBase(titulo, corpo) {
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>${escapeHtml(titulo)}</title>
+<style>${ADMIN_STYLE}</style>
+</head>
+<body>
+${corpo}
+</body>
+</html>`;
+}
+
+function paginaAdminMensagem(mensagem) {
+  return paginaAdminBase(
+    "Admin",
+    `<p class="aviso">${escapeHtml(mensagem)}</p>`,
+  );
+}
+
+function paginaAdminLogin(erro = "") {
+  return paginaAdminBase(
+    "Entrar — Admin",
+    `<form class="login" method="post" action="/admin">
+<h1>Área administrativa</h1>
+<input type="password" name="senha" placeholder="Senha" autocomplete="current-password" autofocus required>
+<button class="primario" type="submit">Entrar</button>
+${erro ? `<div class="msg-erro">${escapeHtml(erro)}</div>` : ""}
+</form>`,
+  );
+}
+
+// JavaScript do painel (busca, paginação e seleção rodam no navegador,
+// com os dados que o Worker já leu do Google Sheets).
+const PAINEL_SCRIPT = String.raw`
+(function () {
+  var DADOS = window.__DADOS__;
+  var POR_PAGINA = 50;
+  var estado = { aba: "obras", q: "", pagina: 1 };
+  var sel = { obras: new Set(), prateleiras: new Set() };
+  var $ = function (id) { return document.getElementById(id); };
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function norm(s) {
+    return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  DADOS.obras.forEach(function (o) { o._b = norm(o.nome + " " + o.autor + " " + o.id); });
+  DADOS.prateleiras.forEach(function (p) { p._b = norm(p.nome + " " + p.id); });
+
+  function filtrados() {
+    var t = norm(estado.q).trim();
+    var lista = DADOS[estado.aba];
+    if (!t) return lista;
+    return lista.filter(function (i) { return i._b.indexOf(t) !== -1; });
+  }
+
+  function paginaAtual() {
+    var lista = filtrados();
+    var ini = (estado.pagina - 1) * POR_PAGINA;
+    return lista.slice(ini, ini + POR_PAGINA);
+  }
+
+  function botoesPaginacao(p, total) {
+    var marcados = {};
+    [1, p - 1, p, p + 1, total].forEach(function (n) {
+      if (n >= 1 && n <= total) marcados[n] = 1;
+    });
+    var nums = Object.keys(marcados).map(Number).sort(function (a, b) { return a - b; });
+    var out = [];
+    var ultimo = 0;
+    nums.forEach(function (n) {
+      if (ultimo && n - ultimo > 1) out.push('<span class="reticencias">…</span>');
+      out.push('<button type="button" class="pg' + (n === p ? ' atual' : '') + '" data-p="' + n + '">' + n + '</button>');
+      ultimo = n;
+    });
+    return '<button type="button" class="pg" data-p="' + (p - 1) + '"' + (p <= 1 ? ' disabled' : '') + '>← Anterior</button>' +
+      out.join("") +
+      '<button type="button" class="pg" data-p="' + (p + 1) + '"' + (p >= total ? ' disabled' : '') + '>Próxima →</button>';
+  }
+
+  function render() {
+    var lista = filtrados();
+    var total = lista.length;
+    var paginas = Math.max(1, Math.ceil(total / POR_PAGINA));
+    if (estado.pagina > paginas) estado.pagina = paginas;
+    var ini = (estado.pagina - 1) * POR_PAGINA;
+    var pagina = lista.slice(ini, ini + POR_PAGINA);
+    var s = sel[estado.aba];
+
+    $("tab-obras").className = "tab" + (estado.aba === "obras" ? " ativa" : "");
+    $("tab-prateleiras").className = "tab" + (estado.aba === "prateleiras" ? " ativa" : "");
+    $("q").placeholder = estado.aba === "obras"
+      ? "🔍 Buscar obras por nome, autor ou ID…"
+      : "🔍 Buscar prateleiras por nome ou ID…";
+
+    $("info").textContent = total
+      ? "Mostrando " + (ini + 1) + "–" + (ini + pagina.length) + " de " + total
+      : "Nenhum resultado";
+
+    $("todos").disabled = pagina.length === 0;
+    $("todos").checked = pagina.length > 0 && pagina.every(function (i) { return s.has(i.id); });
+
+    $("lista").innerHTML = pagina.length
+      ? pagina.map(function (i) {
+          return '<label class="linha"><input type="checkbox" data-id="' + esc(i.id) + '"' + (s.has(i.id) ? ' checked' : '') + '>' +
+            '<span class="nome">' + esc(i.nome || "(sem nome)") + '</span>' +
+            '<span class="sub">' + esc(i.autor || "") + '</span>' +
+            '<code>' + esc(i.id) + '</code></label>';
+        }).join("")
+      : '<div class="vazio">Nada encontrado.</div>';
+
+    $("paginacao").innerHTML = paginas > 1 ? botoesPaginacao(estado.pagina, paginas) : "";
+
+    var n = s.size;
+    $("barra").hidden = n === 0;
+    $("contagem").textContent = n + (n === 1 ? " item selecionado" : " itens selecionados");
+  }
+
+  $("tab-obras").addEventListener("click", function () { estado.aba = "obras"; estado.q = ""; $("q").value = ""; estado.pagina = 1; render(); });
+  $("tab-prateleiras").addEventListener("click", function () { estado.aba = "prateleiras"; estado.q = ""; $("q").value = ""; estado.pagina = 1; render(); });
+
+  $("q").addEventListener("input", function (e) { estado.q = e.target.value; estado.pagina = 1; render(); });
+
+  $("lista").addEventListener("change", function (e) {
+    var id = e.target.getAttribute("data-id");
+    if (!id) return;
+    if (e.target.checked) sel[estado.aba].add(id); else sel[estado.aba].delete(id);
+    render();
+  });
+
+  $("todos").addEventListener("change", function (e) {
+    var s = sel[estado.aba];
+    paginaAtual().forEach(function (i) { if (e.target.checked) s.add(i.id); else s.delete(i.id); });
+    render();
+  });
+
+  $("paginacao").addEventListener("click", function (e) {
+    var p = e.target.getAttribute && e.target.getAttribute("data-p");
+    if (!p) return;
+    estado.pagina = Number(p);
+    render();
+    window.scrollTo(0, 0);
+  });
+
+  $("limpar").addEventListener("click", function () { sel[estado.aba].clear(); render(); });
+
+  $("gerar").addEventListener("click", function () {
+    var f = $("form-qr");
+    f.innerHTML = "";
+    var t = document.createElement("input");
+    t.type = "hidden"; t.name = "tipo";
+    t.value = estado.aba === "obras" ? "obra" : "prateleira";
+    f.appendChild(t);
+    sel[estado.aba].forEach(function (id) {
+      var i = document.createElement("input");
+      i.type = "hidden"; i.name = "ids"; i.value = id;
+      f.appendChild(i);
+    });
+    f.submit();
+  });
+
+  render();
+})();
+`;
+
+function paginaAdminPainel(obras, prateleiras) {
+  const dados = {
+    obras: obras
+      .filter((o) => o.id)
+      .map((o) => ({ id: o.id, nome: o.nome, autor: o.autor })),
+    prateleiras: prateleiras
+      .filter((p) => p.id)
+      .map((p) => ({ id: p.id, nome: p.nome })),
+  };
+  // "<" escapado para que nenhum valor da planilha feche a tag <script>.
+  const dadosJson = JSON.stringify(dados).replace(/</g, "\\u003c");
+
+  return paginaAdminBase(
+    "Admin — Galeria Raquel Arnaud",
+    `<header class="topo">
+<h1>Administração · Galeria Raquel Arnaud</h1>
+<form method="post" action="/admin/logout"><button class="link" type="submit">Sair</button></form>
+</header>
+<main>
+<div class="tabs">
+<button type="button" id="tab-obras" class="tab">OBRAS (${dados.obras.length})</button>
+<button type="button" id="tab-prateleiras" class="tab">PRATELEIRAS (${dados.prateleiras.length})</button>
+</div>
+<input id="q" type="search" autocomplete="off">
+<div class="cabecalho-lista">
+<label><input type="checkbox" id="todos"> Selecionar todos (desta página)</label>
+<span id="info"></span>
+</div>
+<div id="lista"></div>
+<nav id="paginacao"></nav>
+</main>
+<div id="barra" class="barra" hidden>
+<span id="contagem"></span>
+<button type="button" id="limpar">Limpar</button>
+<button type="button" id="gerar" class="primario">GERAR QR CODES</button>
+</div>
+<form id="form-qr" method="post" action="/admin/qr" target="_blank"></form>
+<script>window.__DADOS__ = ${dadosJson};</script>
+<script>${PAINEL_SCRIPT}</script>`,
+  );
+}
+
+// Desenha os QR Codes no navegador (biblioteca qrcode-generator via cdnjs).
+const QR_SCRIPT = String.raw`
+(function () {
+  if (typeof qrcode === "undefined") {
+    document.getElementById("aviso-lib").hidden = false;
+    return;
+  }
+  var M = 4; // margem (zona silenciosa) em módulos
+  document.querySelectorAll(".qr").forEach(function (el) {
+    var qr = qrcode(0, "M");
+    qr.addData(el.getAttribute("data-url"));
+    qr.make();
+    var n = qr.getModuleCount();
+    var d = "";
+    for (var r = 0; r < n; r++) {
+      for (var c = 0; c < n; c++) {
+        if (qr.isDark(r, c)) d += "M" + (c + M) + " " + (r + M) + "h1v1h-1z";
+      }
+    }
+    var t = n + 2 * M;
+    el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + t + ' ' + t + '" shape-rendering="crispEdges">' +
+      '<rect width="' + t + '" height="' + t + '" fill="#fff"/><path d="' + d + '" fill="#000"/></svg>';
+  });
+  document.getElementById("colunas").addEventListener("change", function (e) {
+    document.documentElement.style.setProperty("--cols", e.target.value);
+  });
+})();
+`;
+
+const QR_STYLE = `
+  :root { --cols: 3; }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; padding: 20px; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; color: #111; background: #fff; }
+  .barra-topo { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #ddd; }
+  .barra-topo button { padding: 9px 16px; border: 1px solid #c9a35f; background: #c9a35f; border-radius: 6px; font-weight: 600; cursor: pointer; }
+  .barra-topo select { padding: 6px; }
+  #aviso-lib { color: #a33; }
+  .grade { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 12px; }
+  .card { margin: 0; padding: 14px; border: 1px dashed #aaa; text-align: center; break-inside: avoid; page-break-inside: avoid; }
+  .qr svg { width: 100%; height: auto; display: block; }
+  figcaption { margin-top: 8px; }
+  figcaption strong { display: block; font-size: 15px; line-height: 1.3; }
+  figcaption small { display: block; margin-top: 3px; color: #777; font-size: 11px; letter-spacing: 0.06em; }
+  @page { margin: 12mm; }
+  @media print {
+    body { padding: 0; }
+    .barra-topo { display: none; }
+  }
+`;
+
+function paginaAdminQr(tipo, itens, base) {
+  const rotulo = tipo === "obra" ? "obra" : "prateleira";
+  const cards = itens
+    .map((i) => {
+      const alvo = `${base}/visualizar/${tipo}/${encodeURIComponent(i.id)}`;
+      return `<figure class="card">
+<div class="qr" data-url="${escapeHtml(alvo)}"></div>
+<figcaption><strong>${escapeHtml(i.nome)}</strong><small>${escapeHtml(i.id)}</small></figcaption>
+</figure>`;
+    })
+    .join("\n");
+
+  return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>QR Codes — ${itens.length} ${rotulo}${itens.length === 1 ? "" : "s"}</title>
+<style>${QR_STYLE}</style>
+</head>
+<body>
+<div class="barra-topo">
+<strong>${itens.length} QR Code${itens.length === 1 ? "" : "s"}</strong>
+<label>Colunas: <select id="colunas"><option>2</option><option selected>3</option><option>4</option></select></label>
+<button type="button" onclick="window.print()">Imprimir / Salvar como PDF</button>
+<span id="aviso-lib" hidden>Não foi possível carregar a biblioteca de QR Code. Verifique a conexão e recarregue.</span>
+</div>
+<div class="grade">
+${cards}
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>${QR_SCRIPT}</script>
+</body>
+</html>`;
+}
+
+async function handleAdmin(request, env, url, partes) {
+  if (!env.ADMIN_PASSWORD) {
+    return adminHtml(
+      paginaAdminMensagem(
+        "Área administrativa não configurada (secret ADMIN_PASSWORD ausente).",
+      ),
+      503,
+    );
+  }
+
+  const sub = partes[1];
+  const logado = await sessaoValida(request, env.ADMIN_PASSWORD);
+
+  // /admin — login (POST) ou painel (GET)
+  if (!sub) {
+    if (request.method === "POST") {
+      const form = await request.formData();
+      const senha = String(form.get("senha") || "");
+      if (await iguais(senha, env.ADMIN_PASSWORD)) {
+        const token = await criarSessao(env.ADMIN_PASSWORD);
+        return redirecionar("/admin", {
+          "Set-Cookie": cookieSessao(token, SESSAO_SEGUNDOS),
+        });
+      }
+      return adminHtml(paginaAdminLogin("Senha incorreta."), 401);
+    }
+    if (!logado) return adminHtml(paginaAdminLogin());
+    const [obras, prateleiras] = await Promise.all([
+      fetchTable(OBRAS_CSV_URL),
+      fetchTable(PRATELEIRAS_CSV_URL),
+    ]);
+    return adminHtml(paginaAdminPainel(obras, prateleiras));
+  }
+
+  // /admin/logout
+  if (sub === "logout") {
+    return redirecionar("/admin", { "Set-Cookie": cookieSessao("", 0) });
+  }
+
+  // /admin/qr — página de impressão (recebe a seleção por POST)
+  if (sub === "qr") {
+    if (!logado || request.method !== "POST") return redirecionar("/admin");
+    const form = await request.formData();
+    const tipo = String(form.get("tipo") || "");
+    const ids = new Set(form.getAll("ids").map(String));
+    if ((tipo !== "obra" && tipo !== "prateleira") || ids.size === 0) {
+      return adminHtml(paginaAdminMensagem("Nenhum item selecionado."), 400);
+    }
+    const tabela = await fetchTable(
+      tipo === "obra" ? OBRAS_CSV_URL : PRATELEIRAS_CSV_URL,
+    );
+    const itens = tabela.filter((i) => i.id && ids.has(i.id));
+    if (itens.length === 0) {
+      return adminHtml(paginaAdminMensagem("Itens não encontrados."), 404);
+    }
+    const base = (env.PUBLIC_BASE_URL || url.origin).replace(/\/+$/, "");
+    return adminHtml(paginaAdminQr(tipo, itens, base));
+  }
+
+  return adminHtml(paginaAdminMensagem("Página não encontrada."), 404);
+}
+
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: CORS_HEADERS });
     }
@@ -331,6 +824,10 @@ export default {
     const partes = url.pathname.split("/").filter(Boolean);
 
     try {
+      if (partes[0] === "admin") {
+        return await handleAdmin(request, env, url, partes);
+      }
+
       if (partes[0] === "visualizar" && partes[1] === "obra" && partes[2]) {
         const obras = await fetchTable(OBRAS_CSV_URL);
         const obra = obras.find((o) => o.id === partes[2]);
