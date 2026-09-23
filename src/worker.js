@@ -412,41 +412,46 @@ function cookieSessao(valor, maxAge) {
 const ADMIN_STYLE = `
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; background: #f4f3f1; color: #222; }
+  body { margin: 0; font-family: 'Inter', sans-serif; background: #faf8f5; color: #232120; }
   button, input { font: inherit; }
-  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12px; color: #6b6259; background: #ece9e4; padding: 2px 6px; border-radius: 4px; }
-  .topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px; background: #fff; border-bottom: 1px solid #ddd8d0; }
-  .topo h1 { font-size: 15px; font-weight: 600; margin: 0; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11.5px; color: #6b6259; background: #ece8e1; padding: 2px 6px; border-radius: 4px; }
+  .topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; background: #faf8f5; border-bottom: 1px solid #e7e1d8; }
+  .topo-marca { display: flex; flex-direction: column; gap: 4px; }
+  .marca { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #a68752; margin: 0; }
+  .topo h1 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 22px; margin: 0; letter-spacing: 0.005em; }
   .topo form { margin: 0; }
-  .link { background: none; border: 0; color: #8a6a3f; cursor: pointer; padding: 4px 8px; }
-  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 120px; }
-  .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
-  .tab { padding: 8px 16px; border: 1px solid #d5cfc5; background: #fff; border-radius: 6px; cursor: pointer; letter-spacing: 0.04em; font-size: 13px; }
-  .tab.ativa { background: #232120; color: #fff; border-color: #232120; }
-  #q { width: 100%; padding: 11px 14px; border: 1px solid #d5cfc5; border-radius: 6px; background: #fff; margin-bottom: 12px; }
-  .cabecalho-lista { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: 13px; color: #6b6259; }
+  .link { background: none; border: 0; color: #8a6a3f; cursor: pointer; padding: 4px 8px; font-family: 'Inter', sans-serif; font-size: 12.5px; letter-spacing: 0.02em; }
+  .link:hover { color: #5f4826; }
+  main { max-width: 860px; margin: 0 auto; padding: 28px 20px 130px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab { padding: 9px 18px; border: 1px solid #d5cfc5; background: #fff; border-radius: 999px; cursor: pointer; letter-spacing: 0.06em; font-size: 11.5px; text-transform: uppercase; color: #6b6259; }
+  .tab.ativa { background: #232120; color: #faf8f5; border-color: #232120; }
+  #q { width: 100%; padding: 13px 16px; border: 1px solid #d5cfc5; border-radius: 8px; background: #fff; margin-bottom: 14px; font-size: 14px; }
+  #q:focus { outline: none; border-color: #c9a35f; }
+  .cabecalho-lista { display: flex; justify-content: space-between; align-items: center; padding: 4px 14px 10px; font-size: 12.5px; color: #8f867c; letter-spacing: 0.02em; }
   .cabecalho-lista label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-  #lista { background: #fff; border: 1px solid #e0dbd3; border-radius: 8px; overflow: hidden; }
-  .linha { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-bottom: 1px solid #eee9e2; cursor: pointer; }
+  #lista { background: #fff; border: 1px solid #e7e1d8; border-radius: 10px; overflow: hidden; }
+  .linha { display: flex; align-items: center; gap: 14px; padding: 13px 16px; border-bottom: 1px solid #eee9e2; cursor: pointer; }
   .linha:last-child { border-bottom: 0; }
   .linha:hover { background: #faf8f5; }
-  .linha .nome { flex: 1 1 auto; min-width: 0; }
-  .linha .sub { color: #8f867c; font-size: 13px; flex: 0 1 30%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .vazio { padding: 28px; text-align: center; color: #8f867c; }
-  #paginacao { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-top: 18px; }
-  .pg { padding: 6px 11px; border: 1px solid #d5cfc5; background: #fff; border-radius: 6px; cursor: pointer; }
-  .pg.atual { background: #232120; color: #fff; border-color: #232120; }
+  .linha .nome { flex: 1 1 auto; min-width: 0; font-family: 'EB Garamond', serif; font-size: 16.5px; }
+  .linha .sub { color: #8f867c; font-size: 13px; font-style: italic; flex: 0 1 30%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vazio { padding: 36px; text-align: center; color: #9a9188; font-family: 'EB Garamond', serif; font-style: italic; font-size: 16px; }
+  #paginacao { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; margin-top: 22px; font-size: 13px; }
+  .pg { padding: 6px 12px; border: 1px solid #d5cfc5; background: #fff; border-radius: 6px; cursor: pointer; color: #232120; }
+  .pg.atual { background: #232120; color: #faf8f5; border-color: #232120; }
   .pg:disabled { opacity: 0.4; cursor: default; }
-  .reticencias { color: #8f867c; padding: 0 4px; }
-  .barra { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 14px 16px; background: #232120; color: #fff; box-shadow: 0 -4px 16px rgba(0,0,0,.15); }
-  .barra button { border: 1px solid #6b6259; background: transparent; color: #fff; padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+  .reticencias { color: #9a9188; padding: 0 4px; }
+  .barra { position: fixed; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px; background: #232120; color: #faf8f5; box-shadow: 0 -6px 20px rgba(0,0,0,.15); }
+  .barra button { border: 1px solid #55504a; background: transparent; color: #faf8f5; padding: 9px 16px; border-radius: 6px; cursor: pointer; font-size: 13px; }
   .barra .primario, .primario { background: #c9a35f; border-color: #c9a35f; color: #1a1815; font-weight: 600; }
-  .login { max-width: 320px; margin: 15vh auto 0; background: #fff; padding: 28px; border: 1px solid #e0dbd3; border-radius: 10px; display: flex; flex-direction: column; gap: 12px; }
-  .login h1 { font-size: 17px; margin: 0 0 4px; }
-  .login input { padding: 10px 12px; border: 1px solid #d5cfc5; border-radius: 6px; }
-  .login button { padding: 10px; border: 1px solid #c9a35f; border-radius: 6px; cursor: pointer; }
+  .login { max-width: 320px; margin: 16vh auto 0; background: #fff; padding: 32px 28px; border: 1px solid #e7e1d8; border-radius: 12px; display: flex; flex-direction: column; gap: 14px; text-align: center; }
+  .login h1 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 21px; margin: 0 0 6px; }
+  .login .marca { text-align: center; }
+  .login input { padding: 11px 14px; border: 1px solid #d5cfc5; border-radius: 6px; text-align: center; }
+  .login button { padding: 11px; border: 1px solid #c9a35f; border-radius: 6px; cursor: pointer; }
   .msg-erro { color: #a33; font-size: 13px; }
-  .aviso { max-width: 420px; margin: 20vh auto 0; text-align: center; color: #6b6259; padding: 0 20px; }
+  .aviso { max-width: 420px; margin: 20vh auto 0; text-align: center; color: #6b6259; padding: 0 20px; font-family: 'EB Garamond', serif; font-size: 17px; }
 `;
 
 function paginaAdminBase(titulo, corpo) {
@@ -457,6 +462,7 @@ function paginaAdminBase(titulo, corpo) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>${escapeHtml(titulo)}</title>
+${FONTS_LINK}
 <style>${ADMIN_STYLE}</style>
 </head>
 <body>
@@ -476,6 +482,7 @@ function paginaAdminLogin(erro = "") {
   return paginaAdminBase(
     "Entrar — Admin",
     `<form class="login" method="post" action="/admin">
+<div class="marca">Galeria Raquel Arnaud</div>
 <h1>Área administrativa</h1>
 <input type="password" name="senha" placeholder="Senha" autocomplete="current-password" autofocus required>
 <button class="primario" type="submit">Entrar</button>
@@ -637,7 +644,10 @@ function paginaAdminPainel(obras, prateleiras) {
   return paginaAdminBase(
     "Admin — Galeria Raquel Arnaud",
     `<header class="topo">
-<h1>Administração · Galeria Raquel Arnaud</h1>
+<div class="topo-marca">
+<div class="marca">Galeria Raquel Arnaud</div>
+<h1>Administração</h1>
+</div>
 <form method="post" action="/admin/logout"><button class="link" type="submit">Sair</button></form>
 </header>
 <main>
@@ -697,21 +707,25 @@ const QR_STYLE = `
   :root { --cols: 3; }
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  body { margin: 0; padding: 20px; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; color: #111; background: #fff; }
-  .barra-topo { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid #ddd; }
-  .barra-topo button { padding: 9px 16px; border: 1px solid #c9a35f; background: #c9a35f; border-radius: 6px; font-weight: 600; cursor: pointer; }
-  .barra-topo select { padding: 6px; }
-  #aviso-lib { color: #a33; }
-  .grade { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 12px; }
-  .card { margin: 0; padding: 14px; border: 1px dashed #aaa; text-align: center; break-inside: avoid; page-break-inside: avoid; }
+  body { margin: 0; padding: 28px; font-family: 'Inter', sans-serif; color: #232120; background: #faf8f5; }
+  .barra-topo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; padding-bottom: 18px; border-bottom: 1px solid #e7e1d8; }
+  .barra-topo .marca { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #a68752; margin-right: auto; }
+  .barra-topo strong { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 18px; color: #232120; }
+  .barra-topo button { padding: 10px 18px; border: 1px solid #c9a35f; background: #c9a35f; color: #1a1815; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; }
+  .barra-topo select { padding: 7px 10px; border: 1px solid #d5cfc5; border-radius: 6px; background: #fff; }
+  #aviso-lib { color: #a33; font-size: 13px; }
+  .grade { display: grid; grid-template-columns: repeat(var(--cols), 1fr); gap: 18px; }
+  .card { margin: 0; padding: 20px 16px; border: 1px solid #e7e1d8; border-radius: 10px; background: #fff; text-align: center; break-inside: avoid; page-break-inside: avoid; }
   .qr svg { width: 100%; height: auto; display: block; }
-  figcaption { margin-top: 8px; }
-  figcaption strong { display: block; font-size: 15px; line-height: 1.3; }
-  figcaption small { display: block; margin-top: 3px; color: #777; font-size: 11px; letter-spacing: 0.06em; }
+  .qr { padding: 6px; }
+  figcaption { margin-top: 12px; padding-top: 12px; border-top: 1px dashed #d5cfc5; }
+  figcaption strong { display: block; font-family: 'EB Garamond', serif; font-weight: 400; font-size: 16px; line-height: 1.3; color: #232120; }
+  figcaption small { display: block; margin-top: 4px; color: #9a9188; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; }
   @page { margin: 12mm; }
   @media print {
-    body { padding: 0; }
+    body { padding: 0; background: #fff; }
     .barra-topo { display: none; }
+    .card { border: 1px dashed #bbb; border-radius: 0; }
   }
 `;
 
@@ -734,10 +748,12 @@ function paginaAdminQr(tipo, itens, base) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>QR Codes — ${itens.length} ${rotulo}${itens.length === 1 ? "" : "s"}</title>
+${FONTS_LINK}
 <style>${QR_STYLE}</style>
 </head>
 <body>
 <div class="barra-topo">
+<span class="marca">Galeria Raquel Arnaud</span>
 <strong>${itens.length} QR Code${itens.length === 1 ? "" : "s"}</strong>
 <label>Colunas: <select id="colunas"><option>2</option><option selected>3</option><option>4</option></select></label>
 <button type="button" onclick="window.print()">Imprimir / Salvar como PDF</button>
