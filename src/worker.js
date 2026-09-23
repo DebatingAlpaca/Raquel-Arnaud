@@ -93,106 +93,161 @@ function escapeHtml(str = "") {
 
 const PAGE_STYLE = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  @keyframes surgir {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   body {
-    font-family: 'Georgia', 'Times New Roman', serif;
-    background: #f7f5f2;
-    color: #1c1c1c;
+    font-family: 'EB Garamond', 'Times New Roman', serif;
+    background: #faf8f5;
+    color: #232120;
     min-height: 100vh;
-    padding: 24px 16px 48px;
+    padding: 56px 24px 80px;
+    animation: surgir 0.5s ease-out;
   }
-  .container { max-width: 640px; margin: 0 auto; }
+  .container { max-width: 620px; margin: 0 auto; }
+  .marca {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #9a9188;
+    margin-bottom: 40px;
+  }
   .voltar {
-    display: inline-block;
-    font-family: sans-serif;
-    font-size: 13px;
-    color: #7a7a7a;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: #8a6a3f;
     text-decoration: none;
-    margin-bottom: 20px;
+    margin-bottom: 36px;
   }
-  .imagem {
+  .voltar:hover { color: #5f4826; }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #a68752;
+    margin-bottom: 10px;
+  }
+  .imagem-wrap {
     width: 100%;
     aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #ece8e1;
+  }
+  .imagem-wrap img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    background: #e5e2dc;
-    border-radius: 4px;
+    display: block;
   }
   h1 {
-    font-size: 28px;
-    font-weight: normal;
-    margin-top: 24px;
+    font-weight: 400;
+    font-size: 34px;
     line-height: 1.25;
+    letter-spacing: 0.005em;
+    margin-top: 32px;
   }
   .meta {
-    font-family: sans-serif;
-    font-size: 14px;
-    color: #6b6b6b;
-    margin-top: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    letter-spacing: 0.03em;
+    color: #8f867c;
+    margin-top: 10px;
+  }
+  .divisor {
+    width: 36px;
+    height: 1px;
+    background: #cbbfa9;
+    margin: 28px 0;
   }
   .descricao {
-    font-size: 17px;
-    line-height: 1.6;
-    margin-top: 20px;
-  }
-  .grupo-nome {
-    font-family: sans-serif;
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: #a37b3b;
-    margin-top: 24px;
+    font-size: 19px;
+    line-height: 1.7;
+    color: #34302c;
   }
   .lista-obras {
-    margin-top: 16px;
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
   }
   .obra-card {
     display: flex;
-    gap: 14px;
+    align-items: center;
+    gap: 20px;
     text-decoration: none;
     color: inherit;
-    background: #fff;
-    border-radius: 6px;
-    padding: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    padding: 20px 0;
+    border-bottom: 1px solid #e7e1d8;
   }
+  .obra-card:first-child { border-top: 1px solid #e7e1d8; }
   .obra-card img {
-    width: 64px;
-    height: 64px;
+    width: 76px;
+    height: 76px;
     object-fit: cover;
-    border-radius: 4px;
-    background: #e5e2dc;
+    background: #ece8e1;
     flex-shrink: 0;
   }
-  .obra-card-info { font-family: sans-serif; }
-  .obra-card-nome { font-size: 15px; font-weight: 600; }
-  .obra-card-tecnica { font-size: 12px; color: #7a7a7a; margin-top: 2px; }
+  .obra-card-info { font-family: 'Inter', sans-serif; }
+  .obra-card-nome {
+    font-family: 'EB Garamond', serif;
+    font-size: 19px;
+    color: #232120;
+  }
+  .obra-card-tecnica {
+    font-size: 12px;
+    color: #9a9188;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+  .obra-card-seta {
+    margin-left: auto;
+    color: #c9bfae;
+    font-size: 18px;
+  }
   .erro {
-    font-family: sans-serif;
+    font-family: 'Inter', sans-serif;
     text-align: center;
-    margin-top: 80px;
-    color: #7a7a7a;
+    margin-top: 100px;
+    color: #9a9188;
+    font-size: 14px;
+    letter-spacing: 0.02em;
   }
 `;
+
+const FONTS_LINK = `<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">`;
 
 function paginaObra(obra) {
   const metaPartes = [obra.ano, obra.tecnica, obra.dimensoes]
     .filter(Boolean)
     .map(escapeHtml);
+  const linkVoltar = obra.prateleira_id
+    ? `<a class="voltar" href="/visualizar/prateleira/${escapeHtml(obra.prateleira_id)}">&larr; Voltar à prateleira</a>`
+    : "";
   return `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(obra.nome)} — Galeria Raquel Arnaud</title>
+${FONTS_LINK}
 <style>${PAGE_STYLE}</style>
 </head>
 <body>
 <div class="container">
-<img class="imagem" src="${escapeHtml(obra.imagem_url)}" alt="${escapeHtml(obra.nome)}">
+<div class="marca">Galeria Raquel Arnaud</div>
+${linkVoltar}
+<div class="imagem-wrap"><img src="${escapeHtml(obra.imagem_url)}" alt="${escapeHtml(obra.nome)}"></div>
 <h1>${escapeHtml(obra.nome)}</h1>
-<div class="meta">${metaPartes.join(" · ")}</div>
+<div class="meta">${metaPartes.join("  ·  ")}</div>
+<div class="divisor"></div>
 <p class="descricao">${escapeHtml(obra.descricao)}</p>
 </div>
 </body>
@@ -206,8 +261,9 @@ function paginaPrateleira(prateleira, obras) {
 <img src="${escapeHtml(o.imagem_url)}" alt="${escapeHtml(o.nome)}">
 <div class="obra-card-info">
 <div class="obra-card-nome">${escapeHtml(o.nome)}</div>
-<div class="obra-card-tecnica">${escapeHtml(o.tecnica)}${o.ano ? " · " + escapeHtml(o.ano) : ""}</div>
+<div class="obra-card-tecnica">${escapeHtml(o.tecnica)}${o.ano ? "  ·  " + escapeHtml(o.ano) : ""}</div>
 </div>
+<span class="obra-card-seta">&rarr;</span>
 </a>`,
     )
     .join("");
@@ -218,12 +274,16 @@ function paginaPrateleira(prateleira, obras) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(prateleira.nome)} — Galeria Raquel Arnaud</title>
+${FONTS_LINK}
 <style>${PAGE_STYLE}</style>
 </head>
 <body>
 <div class="container">
-<div class="grupo-nome">Prateleira</div>
+<div class="marca">Galeria Raquel Arnaud</div>
+<div class="eyebrow">Prateleira</div>
 <h1>${escapeHtml(prateleira.nome)}</h1>
+<div class="meta">${obras.length} ${obras.length === 1 ? "obra" : "obras"}</div>
+<div class="divisor"></div>
 <p class="descricao">${escapeHtml(prateleira.descricao_grupo)}</p>
 <div class="lista-obras">${cards}</div>
 </div>
@@ -238,10 +298,12 @@ function paginaErro(mensagem) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Não encontrado — Galeria Raquel Arnaud</title>
+${FONTS_LINK}
 <style>${PAGE_STYLE}</style>
 </head>
 <body>
 <div class="container">
+<div class="marca">Galeria Raquel Arnaud</div>
 <p class="erro">${escapeHtml(mensagem)}</p>
 </div>
 </body>
