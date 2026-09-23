@@ -1,8 +1,10 @@
 // Cloudflare Worker — serve dados de Obras/Prateleiras a partir do Google Sheets
 // Rotas: GET /obra/:id   |   GET /prateleira/:id
 
-const OBRAS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhYmPxgT_QJ5GzLcKYSv3Zj_bFYcqxQAaZRf5ywcpIeZoGtMTUC7bydm79_VMhyYR1jFN4zugFyMyO/pubhtml?gid=16308019&single=true";
-const PRATELEIRAS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhYmPxgT_QJ5GzLcKYSv3Zj_bFYcqxQAaZRf5ywcpIeZoGtMTUC7bydm79_VMhyYR1jFN4zugFyMyO/pubhtml?gid=112070046&single=true";
+const OBRAS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/SEU_ID/pub?gid=GID_DA_ABA_OBRAS&single=true&output=csv";
+const PRATELEIRAS_CSV_URL =
+  "https://docs.google.com/spreadsheets/d/e/SEU_ID/pub?gid=GID_DA_ABA_PRATELEIRAS&single=true&output=csv";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -56,7 +58,9 @@ function parseCSV(text) {
   const [headers, ...dataRows] = rows;
   return dataRows
     .filter((r) => r.length === headers.length)
-    .map((r) => Object.fromEntries(headers.map((h, i) => [h.trim(), r[i]?.trim() ?? ""])));
+    .map((r) =>
+      Object.fromEntries(headers.map((h, i) => [h.trim(), r[i]?.trim() ?? ""])),
+    );
 }
 
 async function fetchTable(url) {
@@ -69,7 +73,10 @@ async function fetchTable(url) {
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json; charset=utf-8", ...CORS_HEADERS },
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      ...CORS_HEADERS,
+    },
   });
 }
 
@@ -95,7 +102,8 @@ export default {
           fetchTable(OBRAS_CSV_URL),
         ]);
         const prateleira = prateleiras.find((p) => p.id === id);
-        if (!prateleira) return json({ erro: "Prateleira não encontrada" }, 404);
+        if (!prateleira)
+          return json({ erro: "Prateleira não encontrada" }, 404);
         const obrasDaPrateleira = obras.filter((o) => o.prateleira_id === id);
         return json({ ...prateleira, obras: obrasDaPrateleira });
       }
