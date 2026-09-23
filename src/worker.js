@@ -2,9 +2,9 @@
 // Rotas: GET /obra/:id   |   GET /prateleira/:id
 
 const OBRAS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/SEU_ID/pub?gid=GID_DA_ABA_OBRAS&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhYmPxgT_QJ5GzLcKYSv3Zj_bFYcqxQAaZRf5ywcpIeZoGtMTUC7bydm79_VMhyYR1jFN4zugFyMyO/pub?gid=16308019&single=true&output=csv";
 const PRATELEIRAS_CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/SEU_ID/pub?gid=GID_DA_ABA_PRATELEIRAS&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhYmPxgT_QJ5GzLcKYSv3Zj_bFYcqxQAaZRf5ywcpIeZoGtMTUC7bydm79_VMhyYR1jFN4zugFyMyO/pub?gid=112070046&single=true&output=csv";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
