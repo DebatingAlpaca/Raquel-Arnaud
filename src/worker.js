@@ -3,6 +3,8 @@ const OBRAS_CSV_URL =
 const PRATELEIRAS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhYmPxgT_QJ5GzLcKYSv3Zj_bFYcqxQAaZRf5ywcpIeZoGtMTUC7bydm79_VMhyYR1jFN4zugFyMyO/pub?gid=112070046&single=true&output=csv";
 
+const LOGO_SRC = "data:image/png;base64,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";
+
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
@@ -107,12 +109,12 @@ const PAGE_STYLE = `
   }
   .container { max-width: 620px; margin: 0 auto; }
   .marca {
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #9a9188;
     margin-bottom: 40px;
+  }
+  .marca img {
+    height: 30px;
+    width: auto;
+    display: block;
   }
   .voltar {
     display: inline-flex;
@@ -252,7 +254,7 @@ ${FONTS_LINK}
 </head>
 <body>
 <div class="container">
-<div class="marca">Galeria Raquel Arnaud</div>
+<div class="marca"><img src="${LOGO_SRC}" alt="Galeria Raquel Arnaud"></div>
 ${linkVoltar}
 <div class="imagem-wrap"><img src="${escapeHtml(obra.imagem_url)}" alt="${escapeHtml(obra.nome)}"></div>
 <h1>${escapeHtml(obra.nome)}</h1>
@@ -290,7 +292,7 @@ ${FONTS_LINK}
 </head>
 <body>
 <div class="container">
-<div class="marca">Galeria Raquel Arnaud</div>
+<div class="marca"><img src="${LOGO_SRC}" alt="Galeria Raquel Arnaud"></div>
 <div class="eyebrow">Prateleira</div>
 <h1>${escapeHtml(prateleira.nome)}</h1>
 <div class="meta">${obras.length} ${obras.length === 1 ? "obra" : "obras"}</div>
@@ -314,7 +316,7 @@ ${FONTS_LINK}
 </head>
 <body>
 <div class="container">
-<div class="marca">Galeria Raquel Arnaud</div>
+<div class="marca"><img src="${LOGO_SRC}" alt="Galeria Raquel Arnaud"></div>
 <p class="erro">${escapeHtml(mensagem)}</p>
 </div>
 </body>
@@ -417,7 +419,10 @@ const ADMIN_STYLE = `
   code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11.5px; color: #6b6259; background: #ece8e1; padding: 2px 6px; border-radius: 4px; }
   .topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; background: #faf8f5; border-bottom: 1px solid #e7e1d8; }
   .topo-marca { display: flex; flex-direction: column; gap: 4px; }
-  .marca { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #a68752; margin: 0; }
+  .marca { margin: 0; }
+  .marca img { height: 20px; width: auto; display: block; }
+  .login .marca { display: flex; justify-content: center; margin-bottom: 4px; }
+  .login .marca img { height: 26px; }
   .topo h1 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 22px; margin: 0; letter-spacing: 0.005em; }
   .topo form { margin: 0; }
   .link { background: none; border: 0; color: #8a6a3f; cursor: pointer; padding: 4px 8px; font-family: 'Inter', sans-serif; font-size: 12.5px; letter-spacing: 0.02em; }
@@ -482,7 +487,7 @@ function paginaAdminLogin(erro = "") {
   return paginaAdminBase(
     "Entrar — Admin",
     `<form class="login" method="post" action="/admin">
-<div class="marca">Galeria Raquel Arnaud</div>
+<div class="marca"><img src="${LOGO_SRC}" alt="Galeria Raquel Arnaud"></div>
 <h1>Área administrativa</h1>
 <input type="password" name="senha" placeholder="Senha" autocomplete="current-password" autofocus required>
 <button class="primario" type="submit">Entrar</button>
@@ -645,7 +650,7 @@ function paginaAdminPainel(obras, prateleiras) {
     "Admin — Galeria Raquel Arnaud",
     `<header class="topo">
 <div class="topo-marca">
-<div class="marca">Galeria Raquel Arnaud</div>
+<div class="marca"><img src="${LOGO_SRC}" alt="Galeria Raquel Arnaud"></div>
 <h1>Administração</h1>
 </div>
 <form method="post" action="/admin/logout"><button class="link" type="submit">Sair</button></form>
@@ -709,7 +714,8 @@ const QR_STYLE = `
   [hidden] { display: none !important; }
   body { margin: 0; padding: 28px; font-family: 'Inter', sans-serif; color: #232120; background: #faf8f5; }
   .barra-topo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; padding-bottom: 18px; border-bottom: 1px solid #e7e1d8; }
-  .barra-topo .marca { font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #a68752; margin-right: auto; }
+  .barra-topo .marca { margin-right: auto; }
+  .barra-topo .marca img { height: 20px; width: auto; display: block; }
   .barra-topo strong { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 18px; color: #232120; }
   .barra-topo button { padding: 10px 18px; border: 1px solid #c9a35f; background: #c9a35f; color: #1a1815; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; }
   .barra-topo select { padding: 7px 10px; border: 1px solid #d5cfc5; border-radius: 6px; background: #fff; }
@@ -753,7 +759,7 @@ ${FONTS_LINK}
 </head>
 <body>
 <div class="barra-topo">
-<span class="marca">Galeria Raquel Arnaud</span>
+<span class="marca"><img src="${LOGO_SRC}" alt="Galeria Raquel Arnaud"></span>
 <strong>${itens.length} QR Code${itens.length === 1 ? "" : "s"}</strong>
 <label>Colunas: <select id="colunas"><option>2</option><option selected>3</option><option>4</option></select></label>
 <button type="button" onclick="window.print()">Imprimir / Salvar como PDF</button>
