@@ -62,7 +62,7 @@ function parseCSV(text) {
 }
 
 async function fetchTable(url) {
-  const res = await fetch(url, { cf: { cacheTtl: 60, cacheEverything: true } });
+  const res = await fetch(url, { cf: { cacheTtl: 15, cacheEverything: true } });
   if (!res.ok) throw new Error(`Falha ao buscar planilha: ${res.status}`);
   const text = await res.text();
   return parseCSV(text);
@@ -742,7 +742,7 @@ function paginaAdminQr(tipo, itens, base) {
       const alvo = `${base}/visualizar/${tipo}/${encodeURIComponent(i.id)}`;
       return `<figure class="card">
 <div class="qr" data-url="${escapeHtml(alvo)}"></div>
-<figcaption><strong>${escapeHtml(i.nome)}</strong><small>${escapeHtml(i.id)}</small></figcaption>
+<figcaption><strong>${escapeHtml(i.nome)}</strong><small>${tipo === "obra" && i.autor ? escapeHtml(i.autor) : escapeHtml(i.id)}</small></figcaption>
 </figure>`;
     })
     .join("\n");
