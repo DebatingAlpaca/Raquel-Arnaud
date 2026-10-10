@@ -29,29 +29,37 @@ Google Sheets  ->  CSV público  ->  Cloudflare Worker  ->  Página no celular d
 - Identidade visual alinhada à galeria (Garamond + Inter, paleta terrosa e dourada)
 - Atualização de conteúdo direto pela planilha, sem novo deploy
 
+## Demonstração
+
+Painel administrativo em produção: https://raquel-arnaud.jpsilva030107.workers.dev/admin
+
+O acesso é protegido por senha: 12345; Dentro do painel, o botão **?** no canto da tela explica passo a passo como selecionar obras e prateleiras e gerar os QR codes.
+
+Planilha de dados (somente leitura): https://docs.google.com/spreadsheets/d/15_UA0u7HFmvxPr2HtFJ-FEhB_0DSDEJiuspCyjHazIg/edit
+
 ## Estrutura dos dados
 
 **Aba `Obras`**
 
-| Coluna | Descrição |
-|---|---|
-| `id` | Identificador único da obra |
-| `nome` | Título da obra |
-| `autor` | Artista |
+| Coluna          | Descrição                         |
+| --------------- | --------------------------------- |
+| `id`            | Identificador único da obra       |
+| `nome`          | Título da obra                    |
+| `autor`         | Artista                           |
 | `prateleira_id` | Prateleira à qual a obra pertence |
-| `imagem_url` | Link da imagem |
-| `descricao` | Texto descritivo |
-| `ano` | Ano de criação |
-| `tecnica` | Técnica utilizada |
-| `dimensoes` | Dimensões da obra |
+| `imagem_url`    | Link da imagem                    |
+| `descricao`     | Texto descritivo                  |
+| `ano`           | Ano de criação                    |
+| `tecnica`       | Técnica utilizada                 |
+| `dimensoes`     | Dimensões da obra                 |
 
 **Aba `Prateleiras`**
 
-| Coluna | Descrição |
-|---|---|
-| `id` | Identificador único da prateleira |
-| `nome` | Nome do grupo de obras |
-| `descricao_grupo` | Texto descritivo do grupo |
+| Coluna            | Descrição                         |
+| ----------------- | --------------------------------- |
+| `id`              | Identificador único da prateleira |
+| `nome`            | Nome do grupo de obras            |
+| `descricao_grupo` | Texto descritivo do grupo         |
 
 ## Tecnologias
 
@@ -79,8 +87,8 @@ Google Sheets  ->  CSV público  ->  Cloudflare Worker  ->  Página no celular d
 1. Clone o repositório:
 
    ```bash
-   git clone https://github.com/DebatingAlpaca/Raquel-Arnaud
-   cd NOME_DO_REPOSITORIO
+   git clone https://github.com/JoaoPedroSilva-dot/Raquel-Arnaud.git
+   cd Raquel-Arnaud
    npm install
    ```
 
@@ -113,7 +121,8 @@ Este projeto é distribuído sob a licença [MIT](LICENSE). Você pode usar, cop
 
 Sugestão de crédito:
 
-> Baseado no projeto Galeria QR, de João Pedro: https://github.com/DebatingAlpaca/Raquel-Arnaud
+> Baseado no projeto Galeria QR, de João Pedro: https://github.com/JoaoPedroSilva-dot/Raquel-Arnaud
+
 O nome, a marca e as obras da galeria de arte para a qual o sistema foi criado pertencem à galeria e aos respectivos artistas, e não são cobertos pela licença do código.
 
 ## Autor
