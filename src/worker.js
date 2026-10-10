@@ -3,7 +3,8 @@ const OBRAS_CSV_URL =
 const PRATELEIRAS_CSV_URL =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQhYmPxgT_QJ5GzLcKYSv3Zj_bFYcqxQAaZRf5ywcpIeZoGtMTUC7bydm79_VMhyYR1jFN4zugFyMyO/pub?gid=112070046&single=true&output=csv";
 
-const LOGO_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJkAAABVCAQAAADwf47+AAANf0lEQVR42u2caXQVRRaAv7DIEpFVUBGXMYKjQADZZJFxFOQ46CDgguwgIIgLLgg6iqMyHGULCIICowgEN0QjCYRFFAgxJhkgECNbRNkygCSBEDgu3PnxqutVL+8lAfMCZ97tcyD3VnV19/eqq6tu3SoInUTwLKKPIwwLmDOefN7wsF9CFqnU9DxnAUc4Y5Qv3K/TupFLobYf4N+0sZ1bl3ziPEvtSR67uYIykncQsnmCHvTmX5xBeM4zX0v1aG6phXCcup5n7UDYwGesIJFEVrOR23TaMIQjLCaelcSzHUG42Tj3coRsz1I/QBAGlg2wexHSqKj1WxGE6z1yzkDIRmjhSonkBHuJ9Cw/1ROyTx5CeNrQX0f41FZ7hS0e59Unn72cYXnZIPsYoZPNMgfxfDmzSaYJwlQPZAX8yMWe5achVA2C7AVDvxhhqwPZ5gA/czc+D1JyKUotjnKIajbb0wjjXDkbK6uw3wPZSX4KguzyIMhecSDKJKJIZPMQLmIYwh2hRxaFsMphq0EnLnHlnI7QCvgWIaqEyC4rJrIaCNuLrGU1yCdJ3XsZvJpNET4oVs5khGpAb4QxJURWJwiyl21tlJBcJLL2CJMByA3STpaatEF4rxj5mutftI7HYxSFLJD0RnjK0Ccjtk6MN7LxCLcDsAjh1lAja40wpxj5xiL0U39ncdrRoQiGLAWhLVcTRUMa0YSGRlvVGyGWxnSjG714H2GZrRQvZBeRw0EuAqAHwhdlgext9fcQ5jOL6cQwiWsc+VYh/NnA90yxka2xdWMF4Qaddr8jZb2ri+xGdj3Ch1qT0L+aJrJ44+a7uz4Sm7QWjbCi2Mg2IrzNNN5iNrN5h1eprtMeRFhOH4YznNEkIsTbvq5eyJ5EGKS1jNC/muaLeQXtaEIUcxC62HL1Q3jE0I+Qz6XFRJYepB70QRjhwPtSEcjyyKWC1rogvBV6ZM7m/zlXf2cRQrShxyD0L0HzXyvIF3O8oTdCWBAUWT2ENTaL8GNokTVB+Mhhm+ZAVod9CMc5SiGFnOAIYrzOxUFWr5j9snoIiUGRjUQQDlJAIYXkcxhBaBRKZH9CWOewTXUg64ywk/nEEU88CXzMJwh7jd7WH4XsKoQvgyJLRXiPpSQQTzzxLGEDwvOhRFaDAxyhdlBkMYjDKQNzdd/oj0R2ZRHIaiPscZRRKcCgqhTlXYReNsurNmRV+Y3dRl/K33C/YRuW7wpQfhpClWIiq18Esn6u7o3PvfQLV4USWSeELNslJyF0tQ3HY11n3YSwQ6OI5AQ7KQdEEEE51dH0I/OPWMtROQiyyxC+DuL82Yg43ghrNDAmtPXsZQRhAo/yBGOJRRD+plPjEAZ7nJVkgK2JICSTSAoppJHBKJ3vJ4TtrCOFFFJIZwfDddoohNkOl+JBo0bXRzho+zh4dVjaIuyjW2ihjVIeUUH4hRSm66a9Iiv5wtMT0YdMeuhatpBNZJBFJplksdfwgk0hiS1kqiOLHxit0+4gw+iWQlUSWWTUwxqkM0trHdls68X5h1BrWcWToR4FlKMFd9GFVlzpal4DSSTlAqSUD3olU9ytXMWAJUU4/HrYYFckLGEJS1jCEpawhCUsYQlLWMISSIYylL76GEwvzznnygxkCH3pz6MeETk+B8qjfEwy3xDHOOrb0mrzFAMYQR89FI7g74xiIKN1zi6Mop9xJ30ZwiDlNIxiOIMZqmc4y1jE43jNlWuYkZrgUcpoVxnTjNTO2nqj9h0cUJa+CuFWzzvxQXpeaScCOhHLHJkYjhOfLDTS9rsmbEd4luF3p9yiLPnaxViFbcpmeWpXeZZxv+0Hyz2/alkq69lshE5WtuXKtD2I3SF9GQeVPZvHGESSztdU5Wij9J81sov4j7LdqywrlL6P9XxLOunsIJ22AAzWwaLnFTKfjNN6WyNPKwoQRP0rTLCV0E2fY7VLuUp/5iyQPeRxj+cpMp+LrxY/2VoRn4zXCHz/bzTmkeFFZfVPQMQoy1Klty4BspEXDjLf9EBVUpTe28izHEE4BvyOIBTS2KOd80/AP6IsWSpgsiTInrxwkPkctNdyUukNdY4r2IsgrFWxhXagESQo26vadp9GVL3EyLpfOMh8Mkc3wn55QNnGAVPU3zN0agXWKZt/wqqr/sKVHNkSHmAoIxjFOO46v5Els5rvXP0n1Ky2ILQzIrVS9Zx1JdIdjT3cpiyFallDSZCZR9r5jcx/LLTNt1Rhk7JXVxFgdqiV2eKqZbfrXHXOCdl3FwqyY8QYvbJotZQlVenfOzoDlfhGWZ511bL8s3gx97KWZFJIJZuZ5zeyx+hDDCeU9pVO76Nbr0pUIZJ3lW7FZ5VnrauWWQOko2rKvyTIel9ozX9XrTdQlnm67mWwm23kKf20miD1fzH9YeI9lWWrGhO29UCWFgDZsAsHma8+RLJZ6b7I0OrGJ8F53KRKsOrddMM7Yq+J7ZR+SK858yPr4UD21IWDrKbjNeughkoS8LDWub2kdP8KjNeVpY/Sb1T6SR11UZ49AWrZE0GQ5ZzfyDoDMFxpcTSjFR1oQxMWKFuGKqGX0s/oxVE/qGGVvzMstlLhOm252YHs7iDI9p6PyC4m2fbrxymtq+cwvJpyAFrLQ1PoTFuWqXbrQQazlK5ABOt1i3gP0JGdun9X1YFsDROZwUxmMpcl3GlDdoYkviGNdLLY43BjltkYM1J3GQaoAEh317apRmS9VNOM1/U39f/vHEP0KqBORo7jhovJPzxa4fny+8atgzzTosoa2VWOW58O3K3+3mGL6fN3btcqSzk+Ctjixag8AzzSzK/jZs+z54IKd3cf15cVsi9JYjVJOmZ+EBmsYgvjgMF8T6ItVtAnI9nOStJskfy3MI+t5LCPDcSxnAQSWMUW/QmAS5lCNgWc5CT7mOFYsT2RdOJJMI41pKqzu7KBtUZKPOtICRhMHJawhCUsYQlLWMISlrCEJSxh+f+QprQmmua0sy2zB7iWDjQjWh0tiHYs72tAe5rRlNbcbKxxa0AnWtPOtay1AR1pRjStaeJIiaQDLehAtFFKY9rQkvbUUPo1tDfupTmNyi5IqzPHOEUux/mNJY60TxDyySWPPPLIJ5ftTDMWWX2IkM8xCjlleO/mIZzWUWqWVGMlQh65nCaH62xp9yAUcIZMrta2HH7hJMJjSl9mu5fjHCKFSQG3xylVmWG4bnIc69wSPR08C3W6GX/mX+pqOZ3sKzmb2cqwR3l01/MQDbTtjGPy+mvPe0l3vRkhEBPLr449MhbrlFwVLGOfpFtsu32r5sx2TLr4pL8tr33nhDt0iI3/xd+vbA8bNd66l1NGSSHfxKYRObZHmWxLXaKsLwAVuFPnsmapYm3nWh68t5Xe01bWbFveQ47GwWf93njRrCDUoUpfqvSpQAUu0ZvjFNi80yEQyx1tTeKt8kRmbQC4QHt+y3sg26wi3LyQVSdDzSJkqvXFLc4SmfWjltd17YXQIputqnpddfnDxkZGfmTWBPLjSv9afQJi1cxCvrL7dm2Z44GsmZ7imeqYPiwpsjmulnSZ8dEodamhvPspoOLVfFMyTmTW9h3THJGQseqj8aY6e3JAZMN0CI1Vr1efM7IpOvCiU+iQWVufvgnMd0Wp+ZH5plCqqvkp/+x5rJov76hqa4Gt1TKRfapmuGrpa2Ybgapnh2ycnkR8IHTIrEnk/moLNd9nu5oL2RoGMEqHn36lN96NVSAaca9Kuw2Y5UJWXVmSQAeq+qcPzxbZKGXZpvOEQBYbkRz19VRucxcy//FfHjd66FbzfyfVVWR4khEu6EdmhURMAiBbaTPPEdnw0COrrW4+T82OH3X0hLyQFTDRiHOLNeI8lutopTEuZG/Y4t/muoK/zg7ZSB1U8XCokN2qLmnNfE5U+nwXsjReYRG/6ge7wYFsoPEAA/WEck9Ht/SYmiW9TndJm54TMmt37+2hq2XWioE9vMuHLFA9J7MPbiHz7ZJXk+NKn+hANgiorL6aW3Sd6qmH41aU7ucsJlY/vL8+nx2y13TEXIj2yy7HhoABCC0cyMY6bnKpA9lgW+5cB7IRAa8zz4HsO2NPvR+LRGZ1rDepwJpSl3pBotSGOZBZGwBaAaefOJANsT24OJAlBLzOFvXtteJ4M7WrB12jH3Eg82+tZEWMfOZa8lZK0lU3ni/yTybwCs/pRRdxAZA96Ei3I4N9nsgK1Gs5i7FMYAL/0IuDrO3kbtTxRy31cMjKcZ8DmbX4IyrgCsJSk4VGn8zpURAVte1E1s+x+tOJbLIHsnb69THlsKMOWdG+K7gcqMPnetFkXQeyRdxES7qoEEMhN3Q+s9Pqkrcbtob6cZuB2u3TRDbEMSxf5EAWZUPmc/6Md3yX/c5J0/f2tLGy9H12ae15m7vT6xgfKmB/1V1TcwOuWnqkudTm1rNWC/fWrkhf5NtXrgc7YDyMb3u3XNc6F7OD4I9Ii/XAYW5HneIJbEro+v1jOMVejvOmwz6eE+zmCKlEAPPIJZtC/bjXcJD9HCZLRX6/xc8c4LCx6HEQOexhJ/s4SnegJvkc4CDbdCvlk+Yc4AD7OK1CpgEe0j+Br6M7xHbGPH5mDzvZxS52s5tkYviLlfg/IxktWJg3OzwAAAAASUVORK5CYII=";
+const LOGO_SRC =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJkAAABVCAQAAADwf47+AAANf0lEQVR42u2caXQVRRaAv7DIEpFVUBGXMYKjQADZZJFxFOQ46CDgguwgIIgLLgg6iqMyHGULCIICowgEN0QjCYRFFAgxJhkgECNbRNkygCSBEDgu3PnxqutVL+8lAfMCZ97tcyD3VnV19/eqq6tu3SoInUTwLKKPIwwLmDOefN7wsF9CFqnU9DxnAUc4Y5Qv3K/TupFLobYf4N+0sZ1bl3ziPEvtSR67uYIykncQsnmCHvTmX5xBeM4zX0v1aG6phXCcup5n7UDYwGesIJFEVrOR23TaMIQjLCaelcSzHUG42Tj3coRsz1I/QBAGlg2wexHSqKj1WxGE6z1yzkDIRmjhSonkBHuJ9Cw/1ROyTx5CeNrQX0f41FZ7hS0e59Unn72cYXnZIPsYoZPNMgfxfDmzSaYJwlQPZAX8yMWe5achVA2C7AVDvxhhqwPZ5gA/czc+D1JyKUotjnKIajbb0wjjXDkbK6uw3wPZSX4KguzyIMhecSDKJKJIZPMQLmIYwh2hRxaFsMphq0EnLnHlnI7QCvgWIaqEyC4rJrIaCNuLrGU1yCdJ3XsZvJpNET4oVs5khGpAb4QxJURWJwiyl21tlJBcJLL2CJMByA3STpaatEF4rxj5mutftI7HYxSFLJD0RnjK0Ccjtk6MN7LxCLcDsAjh1lAja40wpxj5xiL0U39ncdrRoQiGLAWhLVcTRUMa0YSGRlvVGyGWxnSjG714H2GZrRQvZBeRw0EuAqAHwhdlgext9fcQ5jOL6cQwiWsc+VYh/NnA90yxka2xdWMF4Qaddr8jZb2ri+xGdj3Ch1qT0L+aJrJ44+a7uz4Sm7QWjbCi2Mg2IrzNNN5iNrN5h1eprtMeRFhOH4YznNEkIsTbvq5eyJ5EGKS1jNC/muaLeQXtaEIUcxC62HL1Q3jE0I+Qz6XFRJYepB70QRjhwPtSEcjyyKWC1rogvBV6ZM7m/zlXf2cRQrShxyD0L0HzXyvIF3O8oTdCWBAUWT2ENTaL8GNokTVB+Mhhm+ZAVod9CMc5SiGFnOAIYrzOxUFWr5j9snoIiUGRjUQQDlJAIYXkcxhBaBRKZH9CWOewTXUg64ywk/nEEU88CXzMJwh7jd7WH4XsKoQvgyJLRXiPpSQQTzzxLGEDwvOhRFaDAxyhdlBkMYjDKQNzdd/oj0R2ZRHIaiPscZRRKcCgqhTlXYReNsurNmRV+Y3dRl/K33C/YRuW7wpQfhpClWIiq18Esn6u7o3PvfQLV4USWSeELNslJyF0tQ3HY11n3YSwQ6OI5AQ7KQdEEEE51dH0I/OPWMtROQiyyxC+DuL82Yg43ghrNDAmtPXsZQRhAo/yBGOJRRD+plPjEAZ7nJVkgK2JICSTSAoppJHBKJ3vJ4TtrCOFFFJIZwfDddoohNkOl+JBo0bXRzho+zh4dVjaIuyjW2ihjVIeUUH4hRSm66a9Iiv5wtMT0YdMeuhatpBNZJBFJplksdfwgk0hiS1kqiOLHxit0+4gw+iWQlUSWWTUwxqkM0trHdls68X5h1BrWcWToR4FlKMFd9GFVlzpal4DSSTlAqSUD3olU9ytXMWAJUU4/HrYYFckLGEJS1jCEpawhCUsYQlLWMISSIYylL76GEwvzznnygxkCH3pz6MeETk+B8qjfEwy3xDHOOrb0mrzFAMYQR89FI7g74xiIKN1zi6Mop9xJ30ZwiDlNIxiOIMZqmc4y1jE43jNlWuYkZrgUcpoVxnTjNTO2nqj9h0cUJa+CuFWzzvxQXpeaScCOhHLHJkYjhOfLDTS9rsmbEd4luF3p9yiLPnaxViFbcpmeWpXeZZxv+0Hyz2/alkq69lshE5WtuXKtD2I3SF9GQeVPZvHGESSztdU5Wij9J81sov4j7LdqywrlL6P9XxLOunsIJ22AAzWwaLnFTKfjNN6WyNPKwoQRP0rTLCV0E2fY7VLuUp/5iyQPeRxj+cpMp+LrxY/2VoRn4zXCHz/bzTmkeFFZfVPQMQoy1Klty4BspEXDjLf9EBVUpTe28izHEE4BvyOIBTS2KOd80/AP6IsWSpgsiTInrxwkPkctNdyUukNdY4r2IsgrFWxhXagESQo26vadp9GVL3EyLpfOMh8Mkc3wn55QNnGAVPU3zN0agXWKZt/wqqr/sKVHNkSHmAoIxjFOO46v5Els5rvXP0n1Ky2ILQzIrVS9Zx1JdIdjT3cpiyFallDSZCZR9r5jcx/LLTNt1Rhk7JXVxFgdqiV2eKqZbfrXHXOCdl3FwqyY8QYvbJotZQlVenfOzoDlfhGWZ511bL8s3gx97KWZFJIJZuZ5zeyx+hDDCeU9pVO76Nbr0pUIZJ3lW7FZ5VnrauWWQOko2rKvyTIel9ozX9XrTdQlnm67mWwm23kKf20miD1fzH9YeI9lWWrGhO29UCWFgDZsAsHma8+RLJZ6b7I0OrGJ8F53KRKsOrddMM7Yq+J7ZR+SK858yPr4UD21IWDrKbjNeughkoS8LDWub2kdP8KjNeVpY/Sb1T6SR11UZ49AWrZE0GQ5ZzfyDoDMFxpcTSjFR1oQxMWKFuGKqGX0s/oxVE/qGGVvzMstlLhOm252YHs7iDI9p6PyC4m2fbrxymtq+cwvJpyAFrLQ1PoTFuWqXbrQQazlK5ABOt1i3gP0JGdun9X1YFsDROZwUxmMpcl3GlDdoYkviGNdLLY43BjltkYM1J3GQaoAEh317apRmS9VNOM1/U39f/vHEP0KqBORo7jhovJPzxa4fny+8atgzzTosoa2VWOW58O3K3+3mGL6fN3btcqSzk+Ctjixag8AzzSzK/jZs+z54IKd3cf15cVsi9JYjVJOmZ+EBmsYgvjgMF8T6ItVtAnI9nOStJskfy3MI+t5LCPDcSxnAQSWMUW/QmAS5lCNgWc5CT7mOFYsT2RdOJJMI41pKqzu7KBtUZKPOtICRhMHJawhCUsYQlLWMISlrCEJSxh+f+QprQmmua0sy2zB7iWDjQjWh0tiHYs72tAe5rRlNbcbKxxa0AnWtPOtay1AR1pRjStaeJIiaQDLehAtFFKY9rQkvbUUPo1tDfupTmNyi5IqzPHOEUux/mNJY60TxDyySWPPPLIJ5ftTDMWWX2IkM8xCjlleO/mIZzWUWqWVGMlQh65nCaH62xp9yAUcIZMrta2HH7hJMJjSl9mu5fjHCKFSQG3xylVmWG4bnIc69wSPR08C3W6GX/mX+pqOZ3sKzmb2cqwR3l01/MQDbTtjGPy+mvPe0l3vRkhEBPLr449MhbrlFwVLGOfpFtsu32r5sx2TLr4pL8tr33nhDt0iI3/xd+vbA8bNd66l1NGSSHfxKYRObZHmWxLXaKsLwAVuFPnsmapYm3nWh68t5Xe01bWbFveQ47GwWf93njRrCDUoUpfqvSpQAUu0ZvjFNi80yEQyx1tTeKt8kRmbQC4QHt+y3sg26wi3LyQVSdDzSJkqvXFLc4SmfWjltd17YXQIputqnpddfnDxkZGfmTWBPLjSv9afQJi1cxCvrL7dm2Z44GsmZ7imeqYPiwpsjmulnSZ8dEodamhvPspoOLVfFMyTmTW9h3THJGQseqj8aY6e3JAZMN0CI1Vr1efM7IpOvCiU+iQWVufvgnMd0Wp+ZH5plCqqvkp/+x5rJov76hqa4Gt1TKRfapmuGrpa2Ybgapnh2ycnkR8IHTIrEnk/moLNd9nu5oL2RoGMEqHn36lN96NVSAaca9Kuw2Y5UJWXVmSQAeq+qcPzxbZKGXZpvOEQBYbkRz19VRucxcy//FfHjd66FbzfyfVVWR4khEu6EdmhURMAiBbaTPPEdnw0COrrW4+T82OH3X0hLyQFTDRiHOLNeI8lutopTEuZG/Y4t/muoK/zg7ZSB1U8XCokN2qLmnNfE5U+nwXsjReYRG/6ge7wYFsoPEAA/WEck9Ht/SYmiW9TndJm54TMmt37+2hq2XWioE9vMuHLFA9J7MPbiHz7ZJXk+NKn+hANgiorL6aW3Sd6qmH41aU7ucsJlY/vL8+nx2y13TEXIj2yy7HhoABCC0cyMY6bnKpA9lgW+5cB7IRAa8zz4HsO2NPvR+LRGZ1rDepwJpSl3pBotSGOZBZGwBaAaefOJANsT24OJAlBLzOFvXtteJ4M7WrB12jH3Eg82+tZEWMfOZa8lZK0lU3ni/yTybwCs/pRRdxAZA96Ei3I4N9nsgK1Gs5i7FMYAL/0IuDrO3kbtTxRy31cMjKcZ8DmbX4IyrgCsJSk4VGn8zpURAVte1E1s+x+tOJbLIHsnb69THlsKMOWdG+K7gcqMPnetFkXQeyRdxES7qoEEMhN3Q+s9Pqkrcbtob6cZuB2u3TRDbEMSxf5EAWZUPmc/6Md3yX/c5J0/f2tLGy9H12ae15m7vT6xgfKmB/1V1TcwOuWnqkudTm1rNWC/fWrkhf5NtXrgc7YDyMb3u3XNc6F7OD4I9Ii/XAYW5HneIJbEro+v1jOMVejvOmwz6eE+zmCKlEAPPIJZtC/bjXcJD9HCZLRX6/xc8c4LCx6HEQOexhJ/s4SnegJvkc4CDbdCvlk+Yc4AD7OK1CpgEe0j+Br6M7xHbGPH5mDzvZxS52s5tkYviLlfg/IxktWJg3OzwAAAAASUVORK5CYII=";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -457,6 +458,19 @@ const ADMIN_STYLE = `
   .login button { padding: 11px; border: 1px solid #c9a35f; border-radius: 6px; cursor: pointer; }
   .msg-erro { color: #a33; font-size: 13px; }
   .aviso { max-width: 420px; margin: 20vh auto 0; text-align: center; color: #6b6259; padding: 0 20px; font-family: 'EB Garamond', serif; font-size: 17px; }
+  .topo-acoes { display: flex; align-items: center; gap: 6px; }
+  .ajuda-abrir { display: inline-flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #c9a35f; color: #5f4826; border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: 12.5px; letter-spacing: 0.02em; }
+  .ajuda-abrir:hover { background: #c9a35f; color: #1a1815; }
+  .ajuda-fundo { position: fixed; top: 0; right: 0; bottom: 0; left: 0; background: rgba(35,33,32,.55); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 50; }
+  .ajuda-caixa { position: relative; background: #faf8f5; border: 1px solid #e7e1d8; border-radius: 12px; max-width: 540px; width: 100%; max-height: 88vh; overflow: auto; padding: 28px 30px; box-shadow: 0 18px 50px rgba(0,0,0,.3); }
+  .ajuda-caixa h2 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 26px; margin: 0 0 8px; }
+  .ajuda-caixa p { margin: 0 0 14px; font-size: 13.5px; line-height: 1.55; color: #6b6259; }
+  .ajuda-caixa ol { margin: 0 0 16px; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+  .ajuda-caixa li { margin-bottom: 10px; }
+  .ajuda-caixa .nota { background: #fff; border: 1px solid #e7e1d8; border-left: 3px solid #c9a35f; border-radius: 6px; padding: 10px 12px; }
+  .ajuda-caixa a { color: #8a6a3f; font-weight: 600; }
+  .ajuda-fechar { position: absolute; top: 10px; right: 14px; background: none; border: 0; font-size: 26px; line-height: 1; color: #8f867c; cursor: pointer; }
+  .ajuda-fechar:hover { color: #232120; }
 `;
 
 function paginaAdminBase(titulo, corpo) {
@@ -634,6 +648,20 @@ const PAINEL_SCRIPT = String.raw`
 })();
 `;
 
+const AJUDA_SCRIPT = String.raw`
+(function () {
+  var fundo = document.getElementById("ajuda");
+  var abrirBtn = document.getElementById("ajuda-abrir");
+  var fecharBtn = document.getElementById("ajuda-fechar");
+  function abrir() { fundo.hidden = false; fecharBtn.focus(); }
+  function fechar() { fundo.hidden = true; abrirBtn.focus(); }
+  abrirBtn.addEventListener("click", abrir);
+  fecharBtn.addEventListener("click", fechar);
+  fundo.addEventListener("click", function (e) { if (e.target === fundo) fechar(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !fundo.hidden) fechar(); });
+})();
+`;
+
 function paginaAdminPainel(obras, prateleiras) {
   const dados = {
     obras: obras
@@ -653,7 +681,10 @@ function paginaAdminPainel(obras, prateleiras) {
 <div class="marca"><img src="${LOGO_SRC}" alt="Galeria Raquel Arnaud"></div>
 <h1>Administração</h1>
 </div>
+<div class="topo-acoes">
+<button type="button" id="ajuda-abrir" class="ajuda-abrir" aria-haspopup="dialog">? Ajuda</button>
 <form method="post" action="/admin/logout"><button class="link" type="submit">Sair</button></form>
+</div>
 </header>
 <main>
 <div class="tabs">
@@ -674,8 +705,26 @@ function paginaAdminPainel(obras, prateleiras) {
 <button type="button" id="gerar" class="primario">GERAR QR CODES</button>
 </div>
 <form id="form-qr" method="post" action="/admin/qr" target="_blank"></form>
+<div id="ajuda" class="ajuda-fundo" hidden role="dialog" aria-modal="true" aria-labelledby="ajuda-titulo">
+<div class="ajuda-caixa">
+<button type="button" id="ajuda-fechar" class="ajuda-fechar" aria-label="Fechar">&times;</button>
+<h2 id="ajuda-titulo">Como gerar QR codes</h2>
+<p>Cada QR code leva o visitante até a página de uma obra ou de uma prateleira (um grupo de obras). Siga os passos:</p>
+<ol>
+<li><strong>Escolha o tipo.</strong> Use as abas OBRAS ou PRATELEIRAS no topo. O número entre parênteses é o total cadastrado na planilha.</li>
+<li><strong>Encontre os itens.</strong> Digite na busca: nas obras, por nome, autor ou ID; nas prateleiras, por nome ou ID. A busca ignora acentos e maiúsculas.</li>
+<li><strong>Selecione.</strong> Marque a caixa ao lado de cada item. A opção "Selecionar todos (desta página)" marca de uma vez todos os itens visíveis, até 50 por página.</li>
+<li><strong>Navegue à vontade.</strong> Use os botões numerados, Anterior e Próxima. A seleção é mantida ao trocar de página ou de busca.</li>
+<li><strong>Gere.</strong> Assim que houver itens selecionados, aparece uma barra escura no rodapé com a contagem. Clique em GERAR QR CODES, ou em Limpar para desmarcar tudo da aba atual.</li>
+<li><strong>Imprima.</strong> Uma nova aba abre com os QR codes. Escolha 2, 3 ou 4 colunas e clique em Imprimir / Salvar como PDF.</li>
+</ol>
+<p class="nota">Os QR codes são gerados apenas para a aba que está aberta. Para gerar obras e prateleiras, faça uma geração de cada vez.</p>
+<p>Nome, autor, imagens e textos vêm de uma planilha do Google Sheets. Para alterar qualquer informação, edite a planilha. <a href="https://docs.google.com/spreadsheets/d/15_UA0u7HFmvxPr2HtFJ-FEhB_0DSDEJiuspCyjHazIg/edit" target="_blank" rel="noopener noreferrer">Ver planilha de dados (somente leitura)</a></p>
+</div>
+</div>
 <script>window.__DADOS__ = ${dadosJson};</script>
-<script>${PAINEL_SCRIPT}</script>`,
+<script>${PAINEL_SCRIPT}</script>
+<script>${AJUDA_SCRIPT}</script>`,
   );
 }
 
