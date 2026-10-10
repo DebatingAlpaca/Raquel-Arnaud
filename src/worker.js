@@ -419,11 +419,11 @@ const ADMIN_STYLE = `
   button, input { font: inherit; }
   code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 11.5px; color: #6b6259; background: #ece8e1; padding: 2px 6px; border-radius: 4px; }
   .topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; background: #faf8f5; border-bottom: 1px solid #e7e1d8; }
-  .topo-marca { display: flex; flex-direction: column; gap: 4px; }
+  .topo-marca { display: flex; flex-direction: column; gap: 8px; }
   .marca { margin: 0; }
-  .marca img { height: 20px; width: auto; display: block; }
+  .marca img { height: 56px; width: auto; display: block; }
   .login .marca { display: flex; justify-content: center; margin-bottom: 4px; }
-  .login .marca img { height: 26px; }
+  .login .marca img { height: 76px; }
   .topo h1 { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 22px; margin: 0; letter-spacing: 0.005em; }
   .topo form { margin: 0; }
   .link { background: none; border: 0; color: #8a6a3f; cursor: pointer; padding: 4px 8px; font-family: 'Inter', sans-serif; font-size: 12.5px; letter-spacing: 0.02em; }
@@ -653,12 +653,20 @@ const AJUDA_SCRIPT = String.raw`
   var fundo = document.getElementById("ajuda");
   var abrirBtn = document.getElementById("ajuda-abrir");
   var fecharBtn = document.getElementById("ajuda-fechar");
+  var CHAVE = "galeria_admin_ajuda_vista";
+  function jaViu() {
+    try { return localStorage.getItem(CHAVE) === "1"; } catch (e) { return false; }
+  }
+  function marcarVisto() {
+    try { localStorage.setItem(CHAVE, "1"); } catch (e) {}
+  }
   function abrir() { fundo.hidden = false; fecharBtn.focus(); }
-  function fechar() { fundo.hidden = true; abrirBtn.focus(); }
+  function fechar() { fundo.hidden = true; marcarVisto(); abrirBtn.focus(); }
   abrirBtn.addEventListener("click", abrir);
   fecharBtn.addEventListener("click", fechar);
   fundo.addEventListener("click", function (e) { if (e.target === fundo) fechar(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !fundo.hidden) fechar(); });
+  if (!jaViu()) abrir();
 })();
 `;
 
@@ -764,7 +772,7 @@ const QR_STYLE = `
   body { margin: 0; padding: 28px; font-family: 'Inter', sans-serif; color: #232120; background: #faf8f5; }
   .barra-topo { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 26px; padding-bottom: 18px; border-bottom: 1px solid #e7e1d8; }
   .barra-topo .marca { margin-right: auto; }
-  .barra-topo .marca img { height: 20px; width: auto; display: block; }
+  .barra-topo .marca img { height: 48px; width: auto; display: block; }
   .barra-topo strong { font-family: 'EB Garamond', serif; font-weight: 400; font-size: 18px; color: #232120; }
   .barra-topo button { padding: 10px 18px; border: 1px solid #c9a35f; background: #c9a35f; color: #1a1815; border-radius: 6px; font-weight: 600; font-size: 13px; cursor: pointer; }
   .barra-topo select { padding: 7px 10px; border: 1px solid #d5cfc5; border-radius: 6px; background: #fff; }
